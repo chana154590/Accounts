@@ -10,14 +10,22 @@ export async function uploadController(req: Request, res: Response) {
       return res.status(400).json({ error: 'No file uploaded (field name must be "file")' });
     }
 
-    // file saved on disk by multer
-    const fileOnDiskPath = req.file.path; // absolute or relative depending on multer
+   
+    const fileOnDiskPath = req.file.path; 
     const filename = req.file.filename;
     const originalName = req.file.originalname;
     const mimeType = req.file.mimetype;
     const size = req.file.size;
 
-    // save to GridFS
+   
+    const duplicate = await FileModel.findOne({ originalName, size });
+    if (duplicate) {
+  
+      fs.unlink(fileOnDiskPath, () => {});
+      return res.status(409).json({ error: 'File already exists', file: duplicate });
+    }
+
+
     const conn = mongoose.connection;
     if (!conn.db) throw new Error('MongoDB connection not initialized');
 
@@ -25,7 +33,7 @@ export async function uploadController(req: Request, res: Response) {
       bucketName: 'uploads'
     });
 
-    // create read stream from file on disk
+    
     const readStream = fs.createReadStream(fileOnDiskPath);
     const uploadStream = bucket.openUploadStream(filename, {
       contentType: mimeType,
@@ -41,7 +49,7 @@ export async function uploadController(req: Request, res: Response) {
         return res.status(500).json({ error: 'Failed to save file to DB' });
       })
       .on('finish', async () => {
-        // save metadata document
+    
         const relativePath = path.relative(process.cwd(), fileOnDiskPath);
         const fileDoc = await FileModel.create({
           filename,
