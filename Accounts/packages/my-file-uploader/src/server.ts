@@ -11,13 +11,12 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// routes
+
 app.use('/upload', uploadRouter);
 
-// health
+
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-// start
 async function start() {
   await connectDB();
   app.listen(port, () => {

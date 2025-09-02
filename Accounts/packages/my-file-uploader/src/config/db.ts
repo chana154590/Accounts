@@ -5,7 +5,6 @@ export async function connectDB() {
   if (!uri) throw new Error('MONGO_URI is not defined in env');
 
   await mongoose.connect(uri, {
-    // options can be added here if needed
   } as mongoose.ConnectOptions);
 
   mongoose.connection.on('connected', () => {

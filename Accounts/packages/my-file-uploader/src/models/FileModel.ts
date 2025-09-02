@@ -5,8 +5,8 @@ export interface IFileDoc {
   originalName: string;
   mimeType: string;
   size: number;
-  storagePath: string; // path on disk relative to project
-  gridFsId?: Types.ObjectId; // id in GridFS files collection
+  storagePath: string; 
+  gridFsId?: Types.ObjectId; 
   uploadedAt: Date;
 }
 
