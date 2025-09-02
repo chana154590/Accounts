@@ -1,0 +1,37 @@
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Build output
+/dist/
+/build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Package lock
+package-lock.json
+
+# Ignore uploads (if any)
+uploads/
+
+# Ignore local files in packages
+Accounts/packages/*/node_modules/
+Accounts/packages/*/dist/
+Accounts/packages/*/.env
+Accounts/packages/*/.env.*
